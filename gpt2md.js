@@ -27,9 +27,23 @@ body.querySelectorAll('.text-message').forEach((n, i) => {
     }
 });
 
+const sortDate = () => {
+    const lDate = new Date()
+    const lDateLocal = new Date(
+        lDate.getTime() - lDate.getTimezoneOffset() * 60000
+    )
+    return lDateLocal
+        .toISOString()
+        .replaceAll(':', '')
+        .replaceAll('-', '')
+        .replace('T', '-')
+        .substring(0, 15)
+}
+
 // Download
 const a = document.createElement('a');
-a.download = `${document.title}.md`;
+const title = document.title
+a.download = `${title.endsWith('.') ? title.slice(0, -1) : title}-${sortDate()}.md`;
 a.href = URL.createObjectURL(new Blob([text]));
 a.style.display = 'none';
 document.body.appendChild(a);
